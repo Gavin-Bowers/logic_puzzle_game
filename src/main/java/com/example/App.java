@@ -52,7 +52,7 @@ public class App extends Application {
         forceRefresher.toBack();
         
         //gates.get(0).setTranslateX(200.0); 
-        gates.add(new GateCard(root, GateType.AND));
+        root.getChildren().add(new GateCard(GateType.AND));
         
         SpawnGate(GateType.AND);
         SpawnGate(GateType.OR);
@@ -65,10 +65,6 @@ public class App extends Application {
     	gates.add(new LogicGate(type));
     }
 //-----------------------------------------------------------
-    
-    public static Group getRoot() { //Public variables don't work across classes for some reason, so I use this instead
-        return root;
-    }
 
     public static void forceRefresh() {
         forceRefresher.toFront();

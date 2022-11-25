@@ -1,6 +1,5 @@
 package com.example;
 
-import javafx.scene.Group;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -18,7 +17,7 @@ public class WireNode extends Circle{
     private Boolean wireIsVisible = false;
     private WireNode connectedNode = null;
     
-    WireNode(Group root, double x, double y, String type) { //Currently only supports one output
+    WireNode(double x, double y, String type) { //Currently only supports one output
 
         this.type = type;
 
@@ -27,7 +26,7 @@ public class WireNode extends Circle{
         this.setRadius(6);
         this.setFill(Color.GREEN);
 
-        makeWirable(root, this);
+        makeWirable(this);
 
         //wire drawing line
         this.wire.setFill(Color.TRANSPARENT);
@@ -53,7 +52,7 @@ public class WireNode extends Circle{
 
     public void drawWire(double x, double y) {
         if(!wireIsVisible) {
-            App.getRoot().getChildren().add(wire);
+            App.root.getChildren().add(wire);
             wire.toBack();
             wireIsVisible = true;
         }
@@ -79,7 +78,7 @@ public class WireNode extends Circle{
         wire.setControlY2(endY);
     }
 
-    private void makeWirable(Group root, WireNode self) {
+    private void makeWirable(WireNode self) {
 
         self.setOnMouseEntered(event -> {
             self.setFill(Color.LIGHTGREEN);
@@ -171,7 +170,7 @@ public class WireNode extends Circle{
                 self.clearWire();
             }
             if(self.type == "input") {
-                App.getRoot().getChildren().remove(self.wire);
+                App.root.getChildren().remove(self.wire);
                 self.wireIsVisible = false;
             }
             event.consume();
@@ -179,7 +178,7 @@ public class WireNode extends Circle{
     }
 
     public void clearWire() {
-        App.getRoot().getChildren().remove(this.wire);
+        App.root.getChildren().remove(this.wire);
         this.wireIsVisible = false;
         //Remove reference in LogicGate
         this.nullConnectedNode();

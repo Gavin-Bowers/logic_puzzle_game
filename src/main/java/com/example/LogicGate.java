@@ -61,14 +61,14 @@ public class LogicGate extends Group{
             //input wire select amount
             //New code from Mika v -------------------------------------------------------
             if(type == GateType.NOT) {	//for only one input, (probably only going to be used by NOTgate)
-                inputs.add(new WireNode(App.root, 6, 27, "input"));
-                outputs.add(new WireNode(App.root, 100, 27, "output"));
+                inputs.add(new WireNode(6, 27, "input"));
+                outputs.add(new WireNode(100, 27, "output"));
             }
             else //for two one input
             {
-            	inputs.add(new WireNode(App.root, 6, 16.5, "input"));
-                inputs.add(new WireNode(App.root, 6, 38, "input"));
-                outputs.add(new WireNode(App.root, 100, 27, "output"));
+            	inputs.add(new WireNode(6, 16.5, "input"));
+                inputs.add(new WireNode(6, 38, "input"));
+                outputs.add(new WireNode(100, 27, "output"));
             }
             //New code from Mika ^ -------------------------------------------------------
 
@@ -87,16 +87,15 @@ public class LogicGate extends Group{
         }
     }
 
-    //changed to protected so GateCard can use it
-    protected void setupWirePreviewOverGate(LogicGate self) { //Allows wire previews to render over this node
+    private void setupWirePreviewOverGate(LogicGate self) { //Allows wire previews to render over this node
         self.image.setOnDragOver(new EventHandler<DragEvent>() { public void handle(DragEvent event) { //Target
             if (event.getDragboard().hasString()) {
                 ((WireNode) event.getGestureSource()).drawWire(event.getSceneX(),event.getSceneY());
             }
         }});
     }
-    //changed to protected so GateCard can use it
-    protected void setupDrag(ImageView image, LogicGate self) {
+    
+    private void setupDrag(ImageView image, LogicGate self) {
         final Delta dragDelta = new Delta(); //This sticks around as long as the gate does despite being declared in this function
 
         image.setOnMousePressed(new EventHandler<MouseEvent>() {@Override public void handle(MouseEvent event) {
