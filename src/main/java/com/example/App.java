@@ -29,7 +29,8 @@ public class App extends Application {
         SPLITTER,
         NOR,
         NAND,
-        XOR
+        XOR,
+        XNOR
     }
 
     @Override
@@ -54,9 +55,10 @@ public class App extends Application {
         //gates.get(0).setTranslateX(200.0); 
         root.getChildren().add(new GateCard(GateType.AND));
         
-        SpawnGate(GateType.AND);
-        SpawnGate(GateType.OR);
-        SpawnGate(GateType.NOT);
+        //Spawns a gate of each type
+        for (GateType type : GateType.values()) {
+            SpawnGate(type);
+        }
     }
     
 //gate Spawner -MIKA --------------------------------------

@@ -24,28 +24,31 @@ public class LogicGate extends Group{
             String fileName = "";
             switch(type) { //This will be extended to include the logic in the future
                 case OR:
-                    fileName = "orgate.png";
+                    fileName = "orgate2.png";
                     break;
                 case AND:
-                    fileName = "andgate.png";
+                    fileName = "andgate2.png";
                     break;
                 case NOT:
-                    fileName = "notgate.png";
+                    fileName = "notgate2.png";
                     break;
                 case SPLITTER:
                     fileName = "splitter.png";
                     break;
                 case NOR:
-                    fileName = "norgate.png";
+                    fileName = "norgate2.png";
                     break;
                 case NAND:
-                    fileName = "nandgate.png";
+                    fileName = "nandgate2.png";
                     break;
                 case XOR:
-                    fileName = "xorgate.png";
+                    fileName = "xorgate2.png";
+                    break;
+                case XNOR:
+                    fileName = "xnorgate2.png";
                     break;
                 default:
-                    fileName = "andgate.png";
+                    fileName = "andgate2.png";
                     System.out.println("How did you get here?");
                     break;
             }
@@ -53,22 +56,22 @@ public class LogicGate extends Group{
             this.image = new ImageView(image);
             this.image.setX(0);
             this.image.setY(0);
-            this.image.setFitHeight(55);
-            this.image.setFitWidth(100);
+            this.image.setFitHeight(50);
+            this.image.setFitWidth(135);
             setupDrag(this.image, this); //Allows clicking and dragging to translate (change the tranlsation x and y, which apply after other positioning) to the group
             this.getChildren().add(this.image);
             
             //input wire select amount
             //New code from Mika v -------------------------------------------------------
             if(type == GateType.NOT) {	//for only one input, (probably only going to be used by NOTgate)
-                inputs.add(new WireNode(6, 27, "input"));
-                outputs.add(new WireNode(100, 27, "output"));
+                inputs.add(new WireNode(6, 25, "input"));
+                outputs.add(new WireNode(130, 25, "output"));
             }
             else //for two one input
             {
-            	inputs.add(new WireNode(6, 16.5, "input"));
-                inputs.add(new WireNode(6, 38, "input"));
-                outputs.add(new WireNode(100, 27, "output"));
+            	inputs.add(new WireNode(6, 14, "input"));
+                inputs.add(new WireNode(6, 37, "input"));
+                outputs.add(new WireNode(130, 25, "output"));
             }
             //New code from Mika ^ -------------------------------------------------------
 
@@ -94,7 +97,7 @@ public class LogicGate extends Group{
             }
         }});
     }
-    
+
     private void setupDrag(ImageView image, LogicGate self) {
         final Delta dragDelta = new Delta(); //This sticks around as long as the gate does despite being declared in this function
 
