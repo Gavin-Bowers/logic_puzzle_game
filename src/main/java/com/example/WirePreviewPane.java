@@ -1,14 +1,13 @@
 package com.example;
 
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.input.DragEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class WirePreviewPane extends Rectangle{
 
-    WirePreviewPane(Group root, double width, double height) {
+    WirePreviewPane(double width, double height) {
         this.setWidth(width);
         this.setHeight(height);
         //this.setFill(Color.TRANSPARENT);

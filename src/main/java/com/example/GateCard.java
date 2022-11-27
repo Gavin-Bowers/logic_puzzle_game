@@ -3,6 +3,7 @@ package com.example;
 import com.example.App.GateType;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
@@ -39,11 +40,17 @@ public class GateCard extends ImageView{ //LogicGate extends Group
                 case XOR:
                     fileName = "xorcard.png";
                     break;
+                case XNOR:
+                    fileName = "xnorcard.png";
+                    break;
                 default:
                     fileName = "andcard.png";
                     System.out.println("How did you get here?");
                     break;
             }
+
+            //TEMPORARY
+            fileName = "andcard.png";
 
             this.setImage(new Image(getClass().getResourceAsStream(fileName)));
             this.setX(0);
@@ -69,7 +76,8 @@ public class GateCard extends ImageView{ //LogicGate extends Group
 
      private void setupClickSpawn(GateCard self) {
          this.setOnMousePressed(new EventHandler<MouseEvent>() {@Override public void handle(MouseEvent event) {
-             App.SpawnGate(self.type);
+            Bounds boundsInScene = self.localToScene(self.getBoundsInLocal()); //Used to get absolute position of card, so the gate can be spawned above it
+            App.SpawnGate(self.type, boundsInScene.getMinX(), boundsInScene.getMinY() - 60);
          }});
      }
 }

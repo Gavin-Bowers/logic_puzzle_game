@@ -33,7 +33,7 @@ public class LogicGate extends Group{
                     fileName = "notgate2.png";
                     break;
                 case SPLITTER:
-                    fileName = "splitter.png";
+                    fileName = "splitter2.png";
                     break;
                 case NOR:
                     fileName = "norgate2.png";
@@ -67,8 +67,12 @@ public class LogicGate extends Group{
                 inputs.add(new WireNode(6, 25, "input"));
                 outputs.add(new WireNode(130, 25, "output"));
             }
-            else //for two one input
-            {
+            else if(type == GateType.SPLITTER) {
+                inputs.add(new WireNode(6, 25, "input"));
+                outputs.add(new WireNode(90, 25, "output"));
+                outputs.add(new WireNode(110, 25, "output"));
+                outputs.add(new WireNode(130, 25, "output"));
+            } else {
             	inputs.add(new WireNode(6, 14, "input"));
                 inputs.add(new WireNode(6, 37, "input"));
                 outputs.add(new WireNode(130, 25, "output"));

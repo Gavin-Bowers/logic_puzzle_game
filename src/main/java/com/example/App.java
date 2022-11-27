@@ -3,9 +3,12 @@ package com.example;
 import java.util.ArrayList;
 
 import javafx.application.Application;
-import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -17,10 +20,11 @@ public class App extends Application {
     private static Scene scene;
     private static ArrayList<LogicGate> gates = new ArrayList<LogicGate>(); //Each gate is a group containting the image, as well as wire terminals for connecting gates
     
-    public static Group root = new Group();
+    public static BorderPane root = new BorderPane();
     
-    private static WirePreviewPane previewPane = new WirePreviewPane(root, APPWIDTH, APPHEIGHT);
+    private static WirePreviewPane previewPane = new WirePreviewPane(APPWIDTH, APPHEIGHT);
     private static Rectangle forceRefresher = new Rectangle(0,0,0,0);
+    //private static BorderPane borderPane = new BorderPane();
 
     public enum GateType {
         OR,
@@ -46,27 +50,40 @@ public class App extends Application {
         stage.show();
         stage.setOpacity(1.0);
 
-        root.getChildren().add(previewPane); //Draws wires when mouse is dragging over background
+        root.getChildren().add(previewPane);
 
         forceRefresher.setFill(Color.TRANSPARENT); //Used to force refresh
         root.getChildren().add(forceRefresher);
         forceRefresher.toBack();
         
         //gates.get(0).setTranslateX(200.0); 
-        root.getChildren().add(new GateCard(GateType.AND));
+        HBox cards = new HBox(20);
+        root.setBottom(cards);
+
+        //Spawns a gatecard for each type
+        for (GateType type : GateType.values()) {
+            cards.getChildren().add(new GateCard(type));
+        }
         
         //Spawns a gate of each type
         for (GateType type : GateType.values()) {
-            SpawnGate(type);
+            //SpawnGate(type, APPWIDTH / 2, APPHEIGHT / 2);
+        }
+
+        Glow glow = new Glow();
+        glow.setLevel(0.8);
+
+        for(Node n : root.getChildren()) {
+            n.setEffect(glow);
         }
     }
     
-//gate Spawner -MIKA --------------------------------------
-    //sets amount of inputs
-    public static void SpawnGate(GateType type) { //call to spawn gate (andgate, orgate, norgate, notgate)
+    public static void SpawnGate(GateType type, double x, double y) {
     	gates.add(new LogicGate(type));
+        gates.get(gates.size()-1).setTranslateX(x);
+        gates.get(gates.size()-1).setTranslateY(y);
+        gates.get(gates.size()-1).setEffect(new Glow(0.8));
     }
-//-----------------------------------------------------------
 
     public static void forceRefresh() {
         forceRefresher.toFront();
