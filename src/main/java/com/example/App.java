@@ -21,6 +21,7 @@ public class App extends Application {
     private static ArrayList<LogicGate> gates = new ArrayList<LogicGate>(); //Each gate is a group containting the image, as well as wire terminals for connecting gates
     
     public static BorderPane root = new BorderPane();
+    public static Tape tape;
     
     private static WirePreviewPane previewPane = new WirePreviewPane(APPWIDTH, APPHEIGHT);
     private static Rectangle forceRefresher = new Rectangle(0,0,0,0);
@@ -60,22 +61,32 @@ public class App extends Application {
         HBox cards = new HBox(20);
         root.setBottom(cards);
 
+        String[] test = {"000110", "101000"};
+        App.tape = new Tape(test);
+        root.setLeft(tape);
+
+        Evaluator eval = new Evaluator();
+        root.setRight(eval);
+
         //Spawns a gatecard for each type
         for (GateType type : GateType.values()) {
             cards.getChildren().add(new GateCard(type));
         }
         
         //Spawns a gate of each type
-        for (GateType type : GateType.values()) {
-            //SpawnGate(type, APPWIDTH / 2, APPHEIGHT / 2);
-        }
+        /*for (GateType type : GateType.values()) {
+            SpawnGate(type, APPWIDTH / 2, APPHEIGHT / 2);
+        }*/
 
-        Glow glow = new Glow();
-        glow.setLevel(0.8);
+        //Post processing
+        Glow glow = new Glow(0.8);
 
         for(Node n : root.getChildren()) {
             n.setEffect(glow);
         }
+
+        
+        
     }
     
     public static void SpawnGate(GateType type, double x, double y) {

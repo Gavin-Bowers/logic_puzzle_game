@@ -6,10 +6,12 @@ import com.example.App.GateType;
 
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 public class LogicGate extends Group{
     
@@ -64,8 +66,8 @@ public class LogicGate extends Group{
             //input wire select amount
             //New code from Mika v -------------------------------------------------------
             if(type == GateType.NOT) {	//for only one input, (probably only going to be used by NOTgate)
-                inputs.add(new WireNode(6, 25, "input"));
-                outputs.add(new WireNode(130, 25, "output"));
+                inputs.add(new LogicGateWireNode(6, 25, "input"));
+                outputs.add(new LogicGateWireNode(130, 25, "output"));
             }
             else if(type == GateType.SPLITTER) {
                 inputs.add(new WireNode(6, 25, "input"));
@@ -73,9 +75,9 @@ public class LogicGate extends Group{
                 outputs.add(new WireNode(110, 25, "output"));
                 outputs.add(new WireNode(130, 25, "output"));
             } else {
-            	inputs.add(new WireNode(6, 14, "input"));
-                inputs.add(new WireNode(6, 37, "input"));
-                outputs.add(new WireNode(130, 25, "output"));
+            	inputs.add(new LogicGateWireNode(6, 14, "input"));
+                inputs.add(new LogicGateWireNode(6, 37, "input"));
+                outputs.add(new LogicGateWireNode(130, 25, "output"));
             }
             //New code from Mika ^ -------------------------------------------------------
 
@@ -111,11 +113,15 @@ public class LogicGate extends Group{
             dragDelta.x = image.getParent().getTranslateX() - event.getSceneX();
             dragDelta.y = image.getParent().getTranslateY() - event.getSceneY();
             event.setDragDetect(true);
+
+            //Shadow when dragged
+            DropShadow shadow = new DropShadow();
+            shadow.setColor(Color.LIMEGREEN);
+            image.setEffect(shadow);
         }});
         image.setOnMouseReleased(new EventHandler<MouseEvent>() {@Override public void handle(MouseEvent event) {
             image.setMouseTransparent(false);
-            //image.getParent().setTranslateX(20 * Math.round(image.getParent().getTranslateX()/20));
-            //image.getParent().setTranslateY(20 * Math.round(image.getParent().getTranslateY()/20));
+            image.setEffect(null); //Turns off the drop shadow
         }});
         image.setOnMouseEntered(new EventHandler<MouseEvent>() { @Override public void handle(MouseEvent event) {
         }});
