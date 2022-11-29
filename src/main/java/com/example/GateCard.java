@@ -29,7 +29,7 @@ public class GateCard extends ImageView{ //LogicGate extends Group
                     fileName = "notcard.png";
                     break;
                 case SPLITTER:
-                    fileName = "splitter.png";
+                    fileName = "splittercard.png";
                     break;
                 case NOR:
                     fileName = "norcard.png";
