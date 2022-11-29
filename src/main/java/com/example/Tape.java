@@ -10,8 +10,8 @@ import javafx.scene.shape.Rectangle;
 
 public class Tape extends Group{
     GridPane data = new GridPane();
-    WireNode output1 = new WireNode(100,50,"output");
-    WireNode output2 = new WireNode(100,100,"output");
+    WireNode output1 = new WireNode(25,20,"output");
+    WireNode output2 = new WireNode(55,20,"output");
     private int index = 0;
     private int width = 0;
     private int length = 0;
@@ -29,7 +29,7 @@ public class Tape extends Group{
             }
         }
 
-        data.setPadding(new Insets(10, 10, 10, 10)); 
+        data.setPadding(new Insets(40, 10, 10, 10)); 
         this.getChildren().addAll(data, output1, output2);
         //App.root.getChildren().add(this);
     }
@@ -56,9 +56,5 @@ public class Tape extends Group{
                 n.setEffect(shadow);
             }
         }
-    }
-
-    public void updateWires(WireNode node, WireNode connectedNode) { //The gate whose output(s) connect to a wire are responsible for drawing it
-        node.drawWire(connectedNode.getX(),connectedNode.getY());
     }
 }

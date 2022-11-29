@@ -3,14 +3,11 @@ package com.example;
 import java.util.ArrayList;
 
 import javafx.application.Application;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -24,8 +21,6 @@ public class App extends Application {
     public static Tape tape;
     
     private static WirePreviewPane previewPane = new WirePreviewPane(APPWIDTH, APPHEIGHT);
-    private static Rectangle forceRefresher = new Rectangle(0,0,0,0);
-    //private static BorderPane borderPane = new BorderPane();
 
     public enum GateType {
         OR,
@@ -52,10 +47,6 @@ public class App extends Application {
         stage.setOpacity(1.0);
 
         root.getChildren().add(previewPane);
-
-        forceRefresher.setFill(Color.TRANSPARENT); //Used to force refresh
-        root.getChildren().add(forceRefresher);
-        forceRefresher.toBack();
         
         //gates.get(0).setTranslateX(200.0); 
         HBox cards = new HBox(20);
@@ -72,33 +63,13 @@ public class App extends Application {
         for (GateType type : GateType.values()) {
             cards.getChildren().add(new GateCard(type));
         }
-        
-        //Spawns a gate of each type
-        /*for (GateType type : GateType.values()) {
-            SpawnGate(type, APPWIDTH / 2, APPHEIGHT / 2);
-        }*/
-
-        //Post processing
-        Glow glow = new Glow(0.8);
-
-        for(Node n : root.getChildren()) {
-            n.setEffect(glow);
-        }
-
-        
-        
     }
     
     public static void SpawnGate(GateType type, double x, double y) {
     	gates.add(new LogicGate(type));
         gates.get(gates.size()-1).setTranslateX(x);
         gates.get(gates.size()-1).setTranslateY(y);
-        gates.get(gates.size()-1).setEffect(new Glow(0.8));
-    }
-
-    public static void forceRefresh() {
-        forceRefresher.toFront();
-        forceRefresher.toBack();
+        //gates.get(gates.size()-1).setEffect(new Glow(0.8));
     }
 
     public static void main(String[] args) {

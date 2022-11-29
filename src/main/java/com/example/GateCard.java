@@ -8,8 +8,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-//controls Gate Cards
-
 public class GateCard extends ImageView{
     public GateType type;
     
@@ -48,9 +46,7 @@ public class GateCard extends ImageView{
                     break;
             }
 
-            //TEMPORARY
-            //fileName = "andcard.png"; - commented out by mika
-
+            //I guess filenames aren't case sensitive
             this.setImage(new Image(getClass().getResourceAsStream(fileName)));
             this.setX(0);
             this.setY(0);
@@ -76,7 +72,7 @@ public class GateCard extends ImageView{
      private void setupClickSpawn(GateCard self) {
          this.setOnMousePressed(new EventHandler<MouseEvent>() {@Override public void handle(MouseEvent event) {
             Bounds boundsInScene = self.localToScene(self.getBoundsInLocal()); //Used to get absolute position of card, so the gate can be spawned above it
-            App.SpawnGate(self.type, boundsInScene.getMinX(), boundsInScene.getMinY() - 60);
+            App.SpawnGate(self.type, boundsInScene.getMinX() + 8, boundsInScene.getMinY() - 60);
          }});
      }
 }

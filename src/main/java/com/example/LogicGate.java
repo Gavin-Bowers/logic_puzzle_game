@@ -6,6 +6,7 @@ import com.example.App.GateType;
 
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -58,6 +59,9 @@ public class LogicGate extends Group{
             this.image.setFitHeight(50);
             this.image.setFitWidth(135);
             setupDrag(this.image, this); //Allows clicking and dragging to translate (change the tranlsation x and y, which apply after other positioning) to the group
+
+            this.setEffect(new Glow(0.8));
+
             this.getChildren().add(this.image);
             
             //input wire select amount
@@ -116,12 +120,15 @@ public class LogicGate extends Group{
             shadow.setColor(Color.LIMEGREEN);
             image.setEffect(shadow);
         });
+
         image.setOnMouseReleased(event -> {
             image.setMouseTransparent(false);
             image.setEffect(null); //Turns off the drop shadow
         });
+
         image.setOnMouseEntered(event -> {
         });
+
         image.setOnMouseDragged(event -> {
             image.getParent().setTranslateX(event.getSceneX() + dragDelta.x);
             image.getParent().setTranslateY(event.getSceneY() + dragDelta.y);
@@ -136,20 +143,17 @@ public class LogicGate extends Group{
             });
             inputs.forEach(node -> {
                 if(node.getConnectedNode() != null) {
-
                     WireNode connectedNode = node.getConnectedNode();
-
-                    if(connectedNode.getParent() instanceof LogicGate) {
-                        ((LogicGate) connectedNode.getParent()).updateWires(connectedNode, node);
-                    } else if(connectedNode.getParent() instanceof Tape) {
-                        ((Tape) connectedNode.getParent()).updateWires(connectedNode, node);
-                    }
+                    updateWires(connectedNode, node);
                 }
             });
         });
     }
 
-    public void updateWires(WireNode node, WireNode connectedNode) { //The gate whose output(s) connect to a wire are responsible for drawing it
-        node.drawWire(connectedNode.getX(),connectedNode.getY());
+    //Connected wires are drawn entirely by the output node which connects to the wire.
+    //Preview wires meanwhile are drawn by whichever node the drag gesture begins at
+
+    public void updateWires(WireNode node, WireNode connectedNode) {
+        node.drawWire(connectedNode.getAbsoluteX(),connectedNode.getAbsoluteY());
     }
 }

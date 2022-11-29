@@ -14,10 +14,10 @@ public class WireNode extends Circle{
     public static final int APPHEIGHT = 1080; //Not sure why these don't work from App
     public static final int RADIUS = 6;
 
-    protected String type; //Either "input" or "output"
-    protected CubicCurve wire = new CubicCurve();
-    protected Boolean wireIsVisible = false;
-    protected WireNode connectedNode = null;
+    private String type; //Either "input" or "output"
+    private CubicCurve wire = new CubicCurve();
+    private Boolean wireIsVisible = false;
+    private WireNode connectedNode = null;
 
     WireNode(){}
     
@@ -54,15 +54,15 @@ public class WireNode extends Circle{
         this.wire.setEndY(this.getLayoutY() + this.getParent().getTranslateY());
     }
 
-    public void drawWire(double x, double y) {
+    public void drawWire(double x, double y) { //X and Y are the end coords
         if(!wireIsVisible) {
             App.root.getChildren().add(wire);
             wire.toBack();
             wireIsVisible = true;
         }
 
-        double startX = this.getLayoutX() + this.getParent().getTranslateX();
-        double startY = this.getLayoutY() + this.getParent().getTranslateY();
+        double startX = this.getAbsoluteX();
+        double startY = this.getAbsoluteY();
         double endX = x;
         double endY = y;
 
@@ -115,7 +115,6 @@ public class WireNode extends Circle{
     public void setWireStartPosition(double x, double y) {
         this.wire.setStartX(x);
         this.wire.setStartY(y);
-        App.forceRefresh();
     }
 
     //Each node points to the node it's wired to, these connections run both ways
@@ -204,8 +203,8 @@ public class WireNode extends Circle{
                 if(db.getString() == "output") {
                     ((WireNode) event.getGestureSource()).setWireEndPosition(self.getAbsoluteX(), self.getAbsoluteY());
                 } else {
-                    self.setWireStartPosition(self.getX(), self.getY());
-                    self.drawWire(((WireNode) event.getGestureSource()).getX(),((WireNode) event.getGestureSource()).getY());
+                    self.setWireStartPosition(self.getAbsoluteX(), self.getAbsoluteY());
+                    self.drawWire(((WireNode) event.getGestureSource()).getAbsoluteX(),((WireNode) event.getGestureSource()).getAbsoluteY());
                 }
             }
             event.setDropCompleted(success); //lets the source know whether the string was successfully transferred and used
