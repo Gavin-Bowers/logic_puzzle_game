@@ -4,13 +4,10 @@ import java.util.ArrayList;
 
 import com.example.App.GateType;
 
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 public class LogicGate extends Group{
@@ -66,8 +63,8 @@ public class LogicGate extends Group{
             //input wire select amount
             //New code from Mika v -------------------------------------------------------
             if(type == GateType.NOT) {	//for only one input, (probably only going to be used by NOTgate)
-                inputs.add(new LogicGateWireNode(6, 25, "input"));
-                outputs.add(new LogicGateWireNode(130, 25, "output"));
+                inputs.add(new WireNode(6, 25, "input"));
+                outputs.add(new WireNode(130, 25, "output"));
             }
             else if(type == GateType.SPLITTER) {
                 inputs.add(new WireNode(6, 25, "input"));
@@ -75,9 +72,9 @@ public class LogicGate extends Group{
                 outputs.add(new WireNode(110, 25, "output"));
                 outputs.add(new WireNode(130, 25, "output"));
             } else {
-            	inputs.add(new LogicGateWireNode(6, 14, "input"));
-                inputs.add(new LogicGateWireNode(6, 37, "input"));
-                outputs.add(new LogicGateWireNode(130, 25, "output"));
+            	inputs.add(new WireNode(6, 14, "input"));
+                inputs.add(new WireNode(6, 37, "input"));
+                outputs.add(new WireNode(130, 25, "output"));
             }
             //New code from Mika ^ -------------------------------------------------------
 
@@ -97,17 +94,17 @@ public class LogicGate extends Group{
     }
 
     private void setupWirePreviewOverGate(LogicGate self) { //Allows wire previews to render over this node
-        self.image.setOnDragOver(new EventHandler<DragEvent>() { public void handle(DragEvent event) { //Target
+        self.image.setOnDragOver(event ->{
             if (event.getDragboard().hasString()) {
                 ((WireNode) event.getGestureSource()).drawWire(event.getSceneX(),event.getSceneY());
             }
-        }});
+        });
     }
 
     private void setupDrag(ImageView image, LogicGate self) {
         final Delta dragDelta = new Delta(); //This sticks around as long as the gate does despite being declared in this function
 
-        image.setOnMousePressed(new EventHandler<MouseEvent>() {@Override public void handle(MouseEvent event) {
+        image.setOnMousePressed(event -> {
             image.setMouseTransparent(true);
             image.getParent().toFront();
             dragDelta.x = image.getParent().getTranslateX() - event.getSceneX();
@@ -118,14 +115,14 @@ public class LogicGate extends Group{
             DropShadow shadow = new DropShadow();
             shadow.setColor(Color.LIMEGREEN);
             image.setEffect(shadow);
-        }});
-        image.setOnMouseReleased(new EventHandler<MouseEvent>() {@Override public void handle(MouseEvent event) {
+        });
+        image.setOnMouseReleased(event -> {
             image.setMouseTransparent(false);
             image.setEffect(null); //Turns off the drop shadow
-        }});
-        image.setOnMouseEntered(new EventHandler<MouseEvent>() { @Override public void handle(MouseEvent event) {
-        }});
-        image.setOnMouseDragged(new EventHandler<MouseEvent>() {@Override public void handle(MouseEvent event) {
+        });
+        image.setOnMouseEntered(event -> {
+        });
+        image.setOnMouseDragged(event -> {
             image.getParent().setTranslateX(event.getSceneX() + dragDelta.x);
             image.getParent().setTranslateY(event.getSceneY() + dragDelta.y);
             event.setDragDetect(false);
@@ -139,11 +136,17 @@ public class LogicGate extends Group{
             });
             inputs.forEach(node -> {
                 if(node.getConnectedNode() != null) {
+
                     WireNode connectedNode = node.getConnectedNode();
-                    ((LogicGate) connectedNode.getParent()).updateWires(connectedNode, node);
+
+                    if(connectedNode.getParent() instanceof LogicGate) {
+                        ((LogicGate) connectedNode.getParent()).updateWires(connectedNode, node);
+                    } else if(connectedNode.getParent() instanceof Tape) {
+                        ((Tape) connectedNode.getParent()).updateWires(connectedNode, node);
+                    }
                 }
             });
-        }});
+        });
     }
 
     public void updateWires(WireNode node, WireNode connectedNode) { //The gate whose output(s) connect to a wire are responsible for drawing it

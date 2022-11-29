@@ -1,7 +1,5 @@
 package com.example;
 
-import javafx.event.EventHandler;
-import javafx.scene.input.DragEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -17,10 +15,10 @@ public class WirePreviewPane extends Rectangle{
 
     private void setupDrawing(WirePreviewPane self) { //Allows wire previews to render over the background
 
-        self.setOnDragOver(new EventHandler<DragEvent>() { public void handle(DragEvent event) { //Target
+        self.setOnDragOver(event -> { //Target
             if (event.getDragboard().hasString()) {
                 ((WireNode) event.getGestureSource()).drawWire(event.getSceneX(),event.getSceneY());
             }
-        }});
+        });
     }
 }

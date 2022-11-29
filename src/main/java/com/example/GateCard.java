@@ -6,15 +6,14 @@ import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 
 //controls Gate Cards
 
-public class GateCard extends ImageView{ //LogicGate extends Group
+public class GateCard extends ImageView{
     public GateType type;
     
-     GateCard(GateType gateType) {	//the gate Card control
+     GateCard(GateType gateType) {
         try {
             this.type = gateType;
             String fileName = "";
@@ -67,11 +66,11 @@ public class GateCard extends ImageView{ //LogicGate extends Group
     }
 
     private void setupWirePreviewOverCard(GateCard self) { //Allows wire previews to render over this node
-        self.setOnDragOver(new EventHandler<DragEvent>() { public void handle(DragEvent event) { //Target
+        self.setOnDragOver(event -> { //Target
             if (event.getDragboard().hasString()) {
                 ((WireNode) event.getGestureSource()).drawWire(event.getSceneX(),event.getSceneY());
             }
-        }});
+        });
     }
 
      private void setupClickSpawn(GateCard self) {

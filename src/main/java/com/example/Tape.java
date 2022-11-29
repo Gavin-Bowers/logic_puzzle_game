@@ -18,7 +18,7 @@ public class Tape extends Group{
 
     Tape(){}
     
-    Tape(String values[]) { //[2][8] or something
+    Tape(String values[]) {
         this.width = values.length;
         this.length = values[0].length();
 
@@ -50,11 +50,15 @@ public class Tape extends Group{
         index++;
         for(Node n : data.getChildren()) {
             n.setEffect(null);
-            if(data.getRowIndex(n) == index) {
+            if(GridPane.getRowIndex(n) == index) { //may need to be "data."" instead
                 DropShadow shadow = new DropShadow();
                 shadow.setColor(Color.LIMEGREEN);
                 n.setEffect(shadow);
             }
         }
+    }
+
+    public void updateWires(WireNode node, WireNode connectedNode) { //The gate whose output(s) connect to a wire are responsible for drawing it
+        node.drawWire(connectedNode.getX(),connectedNode.getY());
     }
 }
