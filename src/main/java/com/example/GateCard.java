@@ -50,7 +50,7 @@ public class GateCard extends ImageView{ //LogicGate extends Group
             }
 
             //TEMPORARY
-            fileName = "andcard.png";
+            //fileName = "andcard.png"; - commented out by mika
 
             this.setImage(new Image(getClass().getResourceAsStream(fileName)));
             this.setX(0);
