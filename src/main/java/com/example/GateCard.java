@@ -28,7 +28,7 @@ public class GateCard extends ImageView{
                     fileName = "notcard.png";
                     break;
                 case SPLITTER:
-                    fileName = "splitter.png";
+                    fileName = "splittercard.png";
                     break;
                 case NOR:
                     fileName = "norcard.png";
@@ -49,7 +49,7 @@ public class GateCard extends ImageView{
             }
 
             //TEMPORARY
-            fileName = "andcard.png";
+            //fileName = "andcard.png"; - commented out by mika
 
             this.setImage(new Image(getClass().getResourceAsStream(fileName)));
             this.setX(0);
