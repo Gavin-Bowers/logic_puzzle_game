@@ -52,7 +52,7 @@ public class App extends Application {
         HBox cards = new HBox(20);
         root.setBottom(cards);
 
-        String[] test = {"000110", "101000"};
+        String[] test = {"0011", "0110"};
         App.tape = new Tape(test);
         root.setLeft(tape);
 
