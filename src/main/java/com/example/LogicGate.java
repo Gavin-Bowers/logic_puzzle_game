@@ -12,7 +12,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public class LogicGate extends Group{
-    
+
+    private GateType type;    
     private ImageView image;
     private ArrayList<WireNode> inputs = new ArrayList<WireNode>();
     private ArrayList<WireNode> outputs = new ArrayList<WireNode>();
@@ -20,6 +21,7 @@ public class LogicGate extends Group{
     LogicGate(){} //Don't use, this is just here so Java doesn't complain
 
     LogicGate(GateType type) {
+        this.type = type;
         try {
             String fileName = "";
             switch(type) { //This will be extended to include the logic in the future
@@ -155,5 +157,40 @@ public class LogicGate extends Group{
 
     public void updateWires(WireNode node, WireNode connectedNode) {
         node.drawWire(connectedNode.getAbsoluteX(),connectedNode.getAbsoluteY());
+    }
+
+    public Boolean evaluate() {
+        Boolean returnVal;
+        switch(this.type) { //This will be extended to include the logic in the future
+            case OR:
+                returnVal = inputs.get(0).evaluate() || inputs.get(1).evaluate();
+                break;
+            case AND:
+                returnVal = inputs.get(0).evaluate() && inputs.get(1).evaluate();
+                break;
+            case NOT:
+                returnVal = !inputs.get(0).evaluate();
+                break;
+            case SPLITTER:
+                returnVal = inputs.get(0).evaluate();
+                break;
+            case NOR:
+                returnVal = !(inputs.get(0).evaluate() || inputs.get(1).evaluate());
+                break;
+            case NAND:
+                returnVal = !(inputs.get(0).evaluate() && inputs.get(1).evaluate());
+                break;
+            case XOR:
+                returnVal = inputs.get(0).evaluate() ^ inputs.get(1).evaluate();
+                break;
+            case XNOR:
+                returnVal = !(inputs.get(0).evaluate() ^ inputs.get(1).evaluate());
+                break;
+            default:
+                returnVal = true;
+                System.out.println("Enum Error");
+                break;
+        }
+        return returnVal;
     }
 }

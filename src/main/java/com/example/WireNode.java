@@ -129,7 +129,18 @@ public class WireNode extends Circle{
     }
 
     public Boolean evaluate() {
-        return true;
+        if(this.type == "input") {
+            return this.getConnectedNode().evaluate();
+        } else {
+            if(this.getParent() instanceof LogicGate) {
+                return ((LogicGate)this.getParent()).evaluate();
+            } else if(this.getParent() instanceof Tape) {
+                return ((Tape)this.getParent()).evaluate(this);
+            } else {
+                System.out.println("Error: wirenode in invalid object" + this.getParent());
+                return true;
+            }
+        }
     }
 
     private void makeWirable(WireNode self) {

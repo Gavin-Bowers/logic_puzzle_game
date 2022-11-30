@@ -2,7 +2,6 @@ package com.example;
 
 import java.util.ArrayList;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -13,37 +12,39 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Evaluator extends Group{
-    private VBox organizerBox = new VBox(10);
+    private VBox organizerVBox = new VBox(10);
 
     //Having any buttons in the program cause default css to be applied, so the styles.css file is used to overide it
-    private HBox buttonBox = new HBox();
+    private HBox buttonHBox = new HBox();
     private Button addInputButton = new Button("+");
     private Button removeInputButton = new Button("-");
+    private Button playButton = new Button("PLAY");
 
     private ArrayList<WireNode> inputs = new ArrayList<WireNode>();
     private GridPane inputBox = new GridPane();
     private GridPane data = new GridPane();
 
     Evaluator() {
-        
-
         setupInputAdder(addInputButton);
         setupInputRemover(removeInputButton);
-        buttonBox.setAlignment(Pos.TOP_RIGHT);
+        setupPlayButton(playButton);
+        buttonHBox.setAlignment(Pos.TOP_RIGHT);
 
         inputBox.setHgap(10);
         inputBox.setVgap(10);
-        organizerBox.setAlignment(Pos.TOP_RIGHT);
+        organizerVBox.setAlignment(Pos.TOP_RIGHT);
 
-        data.setPadding(new Insets(40, 10, 10, 10)); 
+        //data.setPadding(new Insets(10, 10, 10, 10)); 
 
         
-        buttonBox.getChildren().addAll(addInputButton, removeInputButton);
-        organizerBox.getChildren().addAll(buttonBox, inputBox, data);
-        this.getChildren().add(organizerBox);
+        buttonHBox.getChildren().addAll(addInputButton, removeInputButton, playButton);
+        organizerVBox.getChildren().addAll(buttonHBox, inputBox, data);
+        this.getChildren().add(organizerVBox);
 
         setupWirePreviewOverEvaluator(this);
     }
+
+    //Button Handling
 
     private void setupInputAdder(Button self) {
         self.setOnAction(event -> {
@@ -77,14 +78,25 @@ public class Evaluator extends Group{
         });
     }
 
+    private void setupPlayButton(Button self) {
+        self.setOnAction(event -> {
+            this.evaluate();
+        });
+    }
+
+    //Other Stuff
+
     public void evaluate() {
-        int i = 0;
-        while (App.tape.hasNext()) {
+        App.tape.reset();
+        this.organizerVBox.getChildren().remove(this.data);
+        this.data = new GridPane();
+        this.organizerVBox.getChildren().add(this.data);
+
+        for(int i = 0; i < App.tape.getLength(); i++) {
             for(int j = 0; j < inputs.size(); j++) {
-                data.add(new Rectangle(30,30, (inputs.get(j).evaluate()) ? Color.GREEN : Color.BLACK), i, j);
+                data.add(new Rectangle(30,30, (inputs.get(j).evaluate()) ? Color.GREEN : Color.BLACK), j, i); //Column, row
             }
             App.tape.next();
-            i++;
         }
     }
 
