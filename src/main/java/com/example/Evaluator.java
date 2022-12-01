@@ -2,6 +2,7 @@ package com.example;
 
 import java.util.ArrayList;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -15,30 +16,26 @@ public class Evaluator extends Group{
     private VBox organizerVBox = new VBox(10);
 
     //Having any buttons in the program cause default css to be applied, so the styles.css file is used to overide it
-    private HBox buttonHBox = new HBox();
+    private HBox buttonHBox = new HBox(15);
     private Button addInputButton = new Button("+");
     private Button removeInputButton = new Button("-");
     private Button playButton = new Button("PLAY");
 
     private ArrayList<WireNode> inputs = new ArrayList<WireNode>();
-    private GridPane inputBox = new GridPane();
-    private GridPane data = new GridPane();
+    //private GridPane inputBox = new GridPane();
+    private GridPane dataView = new GridPane();
 
     Evaluator() {
         setupInputAdder(addInputButton);
         setupInputRemover(removeInputButton);
         setupPlayButton(playButton);
         buttonHBox.setAlignment(Pos.TOP_RIGHT);
+        buttonHBox.setPadding(new Insets(10,10,0,0));
 
-        inputBox.setHgap(10);
-        inputBox.setVgap(10);
         organizerVBox.setAlignment(Pos.TOP_RIGHT);
 
-        //data.setPadding(new Insets(10, 10, 10, 10)); 
-
-        
         buttonHBox.getChildren().addAll(addInputButton, removeInputButton, playButton);
-        organizerVBox.getChildren().addAll(buttonHBox, inputBox, data);
+        organizerVBox.getChildren().addAll(buttonHBox, dataView);
         this.getChildren().add(organizerVBox);
 
         setupWirePreviewOverEvaluator(this);
@@ -50,31 +47,39 @@ public class Evaluator extends Group{
         self.setOnAction(event -> {
             WireNode wirenode = new WireNode(0,0,"input");
             inputs.add(wirenode);
-            inputBox.add(wirenode, inputs.size(), inputs.size());
-
             for(WireNode node : inputs) {
                 if(node.getConnectedNode() != null) {
-                    node.getConnectedNode().drawWire(node.getAbsoluteX()-20,node.getAbsoluteY()); //The position changes after this executes, so the position change must be added (-20)
+                    node.getConnectedNode().drawWire(node.getAbsoluteX()-40,node.getAbsoluteY()+30); //The position changes after this executes, so the position change must be added (-20)
                 }
             }
+            reformat();
+            
         });
+    }
+
+    private void displayInput(WireNode input, int column) {
+        VBox inputBox = new VBox(input, new Rectangle(2,30*(column+1),Color.LIGHTGREEN), new Rectangle(30,2,Color.LIGHTGREEN));
+        inputBox.setAlignment(Pos.BOTTOM_CENTER);
+        GridPane.setMargin(inputBox,new Insets(10,5,0,5));
+        dataView.add(inputBox, column, 0);
     }
 
     private void setupInputRemover(Button self) {
         self.setOnAction(event -> {
             WireNode wirenode = inputs.get(inputs.size()-1);
-            inputBox.getChildren().remove(wirenode);
-            inputs.remove(wirenode);
-
+            dataView.getChildren().remove(wirenode);
             if(wirenode.getConnectedNode() != null) {
+                wirenode.getConnectedNode().drawWire(wirenode.getConnectedNode().getAbsoluteX(),wirenode.getConnectedNode().getAbsoluteY());
                 wirenode.getConnectedNode().nullConnectedNode();
             }
+            inputs.remove(wirenode);
 
             for(WireNode node : inputs) {
                 if(node.getConnectedNode() != null) {
-                    node.getConnectedNode().drawWire(node.getAbsoluteX()+20,node.getAbsoluteY());
+                    node.getConnectedNode().drawWire(node.getAbsoluteX()+40,node.getAbsoluteY()-30);
                 }
             }
+            reformat();
         });
     }
 
@@ -86,15 +91,33 @@ public class Evaluator extends Group{
 
     //Other Stuff
 
+    public void reformat() {
+        this.organizerVBox.getChildren().remove(this.dataView);
+        this.dataView = new GridPane();
+        this.organizerVBox.getChildren().add(this.dataView);
+
+        dataView.setGridLinesVisible(true); //debug visuals
+        dataView.setAlignment(Pos.TOP_RIGHT);
+
+        int index = 0;
+        for(WireNode input : this.inputs) {
+            displayInput(input, index);
+            index++;
+        }
+    }
+
     public void evaluate() {
         App.tape.reset();
-        this.organizerVBox.getChildren().remove(this.data);
-        this.data = new GridPane();
-        this.organizerVBox.getChildren().add(this.data);
+        reformat();
+
+        Insets dataSpacing = new Insets(0,5,0,5);
 
         for(int i = 0; i < App.tape.getLength(); i++) {
             for(int j = 0; j < inputs.size(); j++) {
-                data.add(new Rectangle(30,30, (inputs.get(j).evaluate()) ? Color.GREEN : Color.BLACK), j, i); //Column, row
+                Rectangle rect = new Rectangle(30,30, (inputs.get(j).evaluate()) ? Color.GREEN : Color.BLACK);
+                GridPane.setMargin(rect, dataSpacing);
+                rect.setStroke(Color.LIGHTGREEN);
+                dataView.add(rect, j, i+1); //Column, row, 1 row is reserved for inputs
             }
             App.tape.next();
         }

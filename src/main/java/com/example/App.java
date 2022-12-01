@@ -69,7 +69,6 @@ public class App extends Application {
     	gates.add(new LogicGate(type));
         gates.get(gates.size()-1).setTranslateX(x);
         gates.get(gates.size()-1).setTranslateY(y);
-        //gates.get(gates.size()-1).setEffect(new Glow(0.8));
     }
 
     public static void main(String[] args) {
