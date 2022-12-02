@@ -80,8 +80,6 @@ public class WireNode extends Circle{
         wire.setControlY2(endY);
     }
 
-    
-
     public void clearWire() {
         App.root.getChildren().remove(this.wire);
         this.wireIsVisible = false;

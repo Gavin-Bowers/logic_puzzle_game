@@ -126,6 +126,27 @@ public class LogicGate extends Group{
         image.setOnMouseReleased(event -> {
             image.setMouseTransparent(false);
             image.setEffect(null); //Turns off the drop shadow
+
+            //Trashing check
+            if(App.trash.isInTrash(self)) {
+                App.trash.setClosed();
+                for(WireNode wirenode : inputs) {
+                    if(wirenode.getConnectedNode() != null) {
+                        wirenode.getConnectedNode().drawWire(wirenode.getConnectedNode().getAbsoluteX(),wirenode.getConnectedNode().getAbsoluteY());
+                        wirenode.getConnectedNode().nullConnectedNode();
+                    }
+                }
+                for(WireNode wirenode : outputs) {
+                    if(wirenode.getConnectedNode() != null) {
+                        wirenode.getConnectedNode().drawWire(wirenode.getConnectedNode().getAbsoluteX(),wirenode.getConnectedNode().getAbsoluteY());
+                        wirenode.getConnectedNode().nullConnectedNode();
+                        wirenode.clearWire();
+                        this.getChildren().remove(wirenode);
+                    }
+                }
+                App.root.getChildren().remove(self);
+                App.deleteGate(self);
+            }
         });
 
         image.setOnMouseEntered(event -> {
@@ -149,6 +170,13 @@ public class LogicGate extends Group{
                     updateWires(connectedNode, node);
                 }
             });
+
+            //Trash preview
+            if(App.trash.isInTrash(self)) {
+                App.trash.setOpen();
+            } else {
+                App.trash.setClosed();
+            }
         });
     }
 
