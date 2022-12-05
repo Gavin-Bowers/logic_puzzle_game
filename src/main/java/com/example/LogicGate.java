@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import com.example.App.GateType;
 
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class LogicGate extends Group{
@@ -17,6 +20,8 @@ public class LogicGate extends Group{
     private ImageView image;
     private ArrayList<WireNode> inputs = new ArrayList<WireNode>();
     private ArrayList<WireNode> outputs = new ArrayList<WireNode>();
+    private HBox hbox;
+    private VBox nodeContainer;
     
     LogicGate(){} //Don't use, this is just here so Java doesn't complain
 
@@ -73,10 +78,10 @@ public class LogicGate extends Group{
                 outputs.add(new WireNode(130, 25, "output"));
             }
             else if(type == GateType.SPLITTER) {
+                //Splitters function pretty differently to other logic gates, so I wrote my own code for making them - Lily
                 inputs.add(new WireNode(6, 25, "input"));
-                outputs.add(new WireNode(90, 25, "output"));
-                outputs.add(new WireNode(110, 25, "output"));
                 outputs.add(new WireNode(130, 25, "output"));
+                splitterSupport();
             } else {
             	inputs.add(new WireNode(6, 14, "input"));
                 inputs.add(new WireNode(6, 37, "input"));
@@ -193,4 +198,59 @@ public class LogicGate extends Group{
         }
         return returnVal;
     }
+    public void addNodeSplitter() {
+    	System.out.println(outputs.size());
+    	nodeContainer.getChildren().add(new WireNode());
+    	if(this.outputs.size() == 1) {
+    		outputs.add(new WireNode(130, 55, "output"));
+    		this.getChildren().add(outputs.get(outputs.size()-1));
+    	} else if(this.outputs.size() % 2 == 1) {
+            outputs.add(new WireNode(130, 25 + (15 *(outputs.size() + 1)), "output"));
+            this.getChildren().add(outputs.get(outputs.size()-1));
+        } else {
+            outputs.add(new WireNode(130, 25 - (15 * (outputs.size())), "output"));
+            nodeContainer.setTranslateY(nodeContainer.getTranslateY() - 30);
+            this.getChildren().add(outputs.get(outputs.size()-1));
+        }
+    }
+
+    //Lily code for splitters v
+	private void splitterSupport() {
+		//create a button for adding nodes
+		Button add = new Button("+");
+		add.setOnAction(Event -> {
+			addNodeSplitter();
+		});
+		
+		//create a button for removing nodes
+		Button remove = new Button("-");
+		remove.setOnAction(Event -> {
+			WireNode temp = outputs.get(outputs.size()-1);
+			if(outputs.size() > 1) {
+				if(temp.getConnectedNode() != null) {
+					temp.getConnectedNode().clearWire();
+					temp.clearWire();
+					
+				}
+				if(outputs.size() %2 == 1) {
+					nodeContainer.setTranslateY(nodeContainer.getTranslateY() + 30);
+				}
+				this.getChildren().remove(temp);
+				outputs.remove(outputs.size()-1);
+				nodeContainer.getChildren().remove(nodeContainer.getChildren().size()-1);
+			}
+		});
+		hbox = new HBox(10);
+		hbox.setTranslateX(35);
+		hbox.getChildren().addAll(add, remove);
+		nodeContainer = new VBox(30);
+		nodeContainer.setStyle("-fx-border-color: green");
+		nodeContainer.setTranslateX(130);
+		nodeContainer.setTranslateY(25);
+		nodeContainer.getChildren().add(new WireNode());
+		this.getChildren().addAll(hbox, nodeContainer);
+		
+	}
+	//Lily code for splitters ^
+	//Lily code for splitters ^
 }
