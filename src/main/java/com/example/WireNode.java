@@ -18,8 +18,6 @@ public class WireNode extends Circle{
     private CubicCurve wire = new CubicCurve();
     private Boolean wireIsVisible = false;
     private WireNode connectedNode = null;
-
-    WireNode(){}
     
     WireNode(double x, double y, String type) {
 
@@ -82,8 +80,6 @@ public class WireNode extends Circle{
         wire.setControlY2(endY);
     }
 
-    
-
     public void clearWire() {
         App.root.getChildren().remove(this.wire);
         this.wireIsVisible = false;
@@ -134,8 +130,8 @@ public class WireNode extends Circle{
         } else {
             if(this.getParent() instanceof LogicGate) {
                 return ((LogicGate)this.getParent()).evaluate();
-            } else if(this.getParent() instanceof Tape) {
-                return ((Tape)this.getParent()).evaluate(this);
+            } else if(this.getParent().getParent().getParent() instanceof Tape) { //You need to ascend the hierarchy of UI elements to get to Tape. There's probably a better way
+                return ((Tape)this.getParent().getParent().getParent()).evaluate(this);
             } else {
                 System.out.println("Error: wirenode in invalid object" + this.getParent());
                 return true;

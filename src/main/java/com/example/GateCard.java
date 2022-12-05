@@ -52,7 +52,6 @@ public class GateCard extends ImageView{
             this.setY(0);
             this.setFitHeight(225);	//will fix + standardize latter, this is for testing
             this.setFitWidth(150);
-            //setupDrag(this.image, this); //Allows clicking and dragging to translate (change the tranlsation x and y, which apply after other positioning) to the group
             setupClickSpawn(this);	//Allows click to spawn Gates from cards
             setupWirePreviewOverCard(this);	//Works now
             

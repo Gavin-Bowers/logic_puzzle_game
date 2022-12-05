@@ -1,16 +1,18 @@
 package com.example;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Tape extends Group{
     GridPane dataView = new GridPane();
     Boolean[][] data;
-    WireNode output1 = new WireNode(25,40,"output");
-    WireNode output2 = new WireNode(55,20,"output");
+    WireNode output1 = new WireNode(0,0,"output");
+    WireNode output2 = new WireNode(0,0,"output");
     private int index = 0;
     private int width = 0;
     private int length = 0;
@@ -22,16 +24,33 @@ public class Tape extends Group{
         this.length = values[0].length();
         data = new Boolean[width][length];
 
+        //This lays out the nodes, and their connections the the data columns
+        VBox inputBox1 = new VBox(output1,new Rectangle(2,30,Color.LIGHTGREEN));
+        VBox inputBox2 = new VBox(output2, new Rectangle(2,60,Color.LIGHTGREEN));
+        inputBox1.setAlignment(Pos.BOTTOM_CENTER);
+        inputBox2.setAlignment(Pos.BOTTOM_CENTER);
+        GridPane.setMargin(inputBox1,new Insets(10,5,0,5));
+        GridPane.setMargin(inputBox2,new Insets(10,5,0,5));
+
+        dataView.add(inputBox1, 0, 0);
+        dataView.add(inputBox2, 1, 0);
+        dataView.setPadding(new Insets(40,0,0,0));
+
+        Insets dataSpacing = new Insets(0,5,0,5);
+
         for(int i=0; i<values.length; i++) {
             char[] digits = values[i].toCharArray();
             for(int j=0; j<digits.length; j++) {
+
                 data[i][j] = '1'== digits[j];
-                dataView.add(new Rectangle(30,30, ('1'== digits[j]) ? Color.GREEN : Color.BLACK), i, j); //makes a 10 by 10 square at the appropriate location in the table (data), and sets the color depending on the input
+                Rectangle rect = new Rectangle(30,30, ('1'== digits[j]) ? Color.GREEN : Color.BLACK);
+                GridPane.setMargin(rect, dataSpacing);
+                rect.setStroke(Color.LIGHTGREEN);
+                dataView.add(rect, i, 1+j); //makes a 10 by 10 square at the appropriate location in the table (data), and sets the color depending on the input
             }
         }
 
-        dataView.setPadding(new Insets(60, 10, 10, 10));
-        this.getChildren().addAll(dataView, output1, output2);
+        this.getChildren().addAll(dataView);
         
         setupWirePreviewOverTape(this);
     }

@@ -16,11 +16,13 @@ public class App extends Application {
 
     private static Scene scene;
     private static ArrayList<LogicGate> gates = new ArrayList<LogicGate>(); //Each gate is a group containting the image, as well as wire terminals for connecting gates
-    
+    private static WirePreviewPane previewPane = new WirePreviewPane(APPWIDTH, APPHEIGHT);
+
     public static BorderPane root = new BorderPane();
     public static Tape tape;
+    public static TrashCard trash;
+
     
-    private static WirePreviewPane previewPane = new WirePreviewPane(APPWIDTH, APPHEIGHT);
 
     public enum GateType {
         OR,
@@ -63,13 +65,19 @@ public class App extends Application {
         for (GateType type : GateType.values()) {
             cards.getChildren().add(new GateCard(type));
         }
+
+        trash = new TrashCard();
+        cards.getChildren().add(trash);
     }
     
     public static void SpawnGate(GateType type, double x, double y) {
     	gates.add(new LogicGate(type));
         gates.get(gates.size()-1).setTranslateX(x);
         gates.get(gates.size()-1).setTranslateY(y);
-        //gates.get(gates.size()-1).setEffect(new Glow(0.8));
+    }
+
+    public static void deleteGate(LogicGate gate) {
+        gates.remove(gate);
     }
 
     public static void main(String[] args) {
