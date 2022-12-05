@@ -114,9 +114,15 @@ public class Evaluator extends Group{
 
         for(int i = 0; i < App.tape.getLength(); i++) {
             for(int j = 0; j < inputs.size(); j++) {
-                Rectangle rect = new Rectangle(30,30, (inputs.get(j).evaluate()) ? Color.GREEN : Color.BLACK);
+                Rectangle rect;
+                if(inputs.get(j).getConnectedNode() != null) {
+            		rect = new Rectangle(30,30, (inputs.get(j).evaluate()) ? Color.GREEN : Color.BLACK); //Column, row
+                    rect.setStroke(Color.LIGHTGREEN);
+            	} else {
+            		rect = new Rectangle(30,30, (Color.RED));
+                    rect.setStroke(Color.PINK);
+            	}
                 GridPane.setMargin(rect, dataSpacing);
-                rect.setStroke(Color.LIGHTGREEN);
                 dataView.add(rect, j, i+1); //Column, row, 1 row is reserved for inputs
             }
             App.tape.next();

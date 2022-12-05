@@ -194,6 +194,15 @@ public class LogicGate extends Group{
 
     public Boolean evaluate() {
         Boolean returnVal;
+
+        //checks for any null sources, and if one is found, it returns false and changes red, to indicate an incorrect node.
+        for(int i = 0; i < inputs.size(); i++) {
+        	if(inputs.get(i).getConnectedNode() == null) {
+        		inputs.get(i).setFill(Color.web("0xFF0000"));
+        		return false;
+        	}
+        }
+
         switch(this.type) { //This will be extended to include the logic in the future
             case OR:
                 returnVal = inputs.get(0).evaluate() || inputs.get(1).evaluate();
