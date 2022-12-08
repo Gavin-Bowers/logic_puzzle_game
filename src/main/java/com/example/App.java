@@ -49,7 +49,7 @@ public class App extends Application {
         stage.setOpacity(1.0);
 
         root.getChildren().add(previewPane);
-        
+        /*
         //gates.get(0).setTranslateX(200.0); 
         HBox cards = new HBox(20);
         root.setBottom(cards);
@@ -68,6 +68,9 @@ public class App extends Application {
 
         trash = new TrashCard();
         cards.getChildren().add(trash);
+        */         //moved to Work Space
+        
+        MainMenuSpace.MainMenuScene();	//calls to load main menu
     }
     
     public static void SpawnGate(GateType type, double x, double y) {
