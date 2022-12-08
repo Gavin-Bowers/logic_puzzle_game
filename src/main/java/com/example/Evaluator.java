@@ -41,6 +41,34 @@ public class Evaluator extends Group{
         setupWirePreviewOverEvaluator(this);
     }
 
+  //------------------------------------------------
+    Evaluator(int ThisHoldsNothingJustUsedForSelection) {	//for level mode (temporary solution)
+      
+        setupPlayButton(playButton);
+        setupMenuButton(MenuButton);
+        
+        buttonHBox.setAlignment(Pos.TOP_RIGHT);
+        buttonHBox.setPadding(new Insets(10,10,0,0));
+
+        organizerVBox.setAlignment(Pos.TOP_RIGHT);
+
+        buttonHBox.getChildren().addAll(MenuButton,playButton);		//spawns buttons
+        organizerVBox.getChildren().addAll(buttonHBox, dataView);
+        this.getChildren().add(organizerVBox);
+        
+        
+        WireNode wirenode = new WireNode(0,0,"input");	//spawns Output
+        inputs.add(wirenode);
+        reformat();
+        
+        setupWirePreviewOverEvaluator(this);
+    }
+    
+    Evaluator(Boolean ThisHoldsNothingJustUsedForSelection) {	//used in ClearScreen 
+    	
+    }
+    //------------------------------------------------    
+    
     //Button Handling
 
     private void setupInputAdder(Button self) {
