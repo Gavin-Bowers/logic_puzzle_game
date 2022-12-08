@@ -40,7 +40,7 @@ public class ClearScreen {
 	
 	public static void Input() { 		//clear (Tape) Input 
 		
-		String[] Empty = {""};	//Input
+	String[] Empty = {""};	//Input
         App.tape = new Tape(Empty, 1);
         App.root.setLeft(App.tape);
         
