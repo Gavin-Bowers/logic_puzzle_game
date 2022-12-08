@@ -148,6 +148,7 @@ public class Evaluator extends Group{
         reformat();
 
         Insets dataSpacing = new Insets(0,5,0,5);
+        WorkSpace.LevelOutputEval = "";			//clears LevelOutputEval //used for Level Value Match check in WorkSpace	-Mika
 
         for(int i = 0; i < App.tape.getLength(); i++) {
             for(int j = 0; j < inputs.size(); j++) {
