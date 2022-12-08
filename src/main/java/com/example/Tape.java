@@ -55,6 +55,34 @@ public class Tape extends Group{
         setupWirePreviewOverTape(this);
     }
 
+     //------------------------------------------------------------------------
+    Tape(String values[], int ThisHoldsNothingJustUsedForSelection) {	//for level mode OutputToMatch (temporary solution)
+        this.width = values.length;
+        this.length = values[0].length();
+        data = new Boolean[width][length];
+
+        Insets dataSpacing = new Insets(0,5,0,5);
+
+        for(int i=0; i<values.length; i++) {
+            char[] digits = values[i].toCharArray();
+            for(int j=0; j<digits.length; j++) {
+
+                data[i][j] = '1'== digits[j];
+                Rectangle rect = new Rectangle(30,30, ('1'== digits[j]) ? Color.GREEN : Color.BLACK);
+                GridPane.setMargin(rect, dataSpacing);
+                rect.setStroke(Color.LIGHTGREEN);
+                dataView.add(rect, i, 1+j); //makes a 10 by 10 square at the appropriate location in the table (data), and sets the color depending on the input
+            }
+        }
+
+        this.getChildren().addAll(dataView);
+        
+        setupWirePreviewOverTape(this);
+    }
+    
+    
+    //------------------------------------------------------------------------
+    
     private void setupWirePreviewOverTape(Tape self) { //Allows wire previews to render over this node
         self.setOnDragOver(event -> { //Target
             if (event.getDragboard().hasString()) {
