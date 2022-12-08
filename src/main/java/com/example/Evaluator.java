@@ -115,6 +115,10 @@ public class Evaluator extends Group{
     private void setupPlayButton(Button self) {
         self.setOnAction(event -> {
             this.evaluate();
+            
+            if(WorkSpace.IsItLeveMode == true) {	//checks if in level Mode	-mika
+            	WorkSpace.LevelValueMatch(LevelMenu.levelSelected, WorkSpace.LevelOutputEval);	//calls level output checker 
+            }
         });
     }
 
