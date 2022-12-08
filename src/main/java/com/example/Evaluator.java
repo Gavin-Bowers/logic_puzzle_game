@@ -30,12 +30,13 @@ public class Evaluator extends Group{
         setupInputAdder(addInputButton);
         setupInputRemover(removeInputButton);
         setupPlayButton(playButton);
+        setupMenuButton(MenuButton);
         buttonHBox.setAlignment(Pos.TOP_RIGHT);
         buttonHBox.setPadding(new Insets(10,10,0,0));
 
         organizerVBox.setAlignment(Pos.TOP_RIGHT);
 
-        buttonHBox.getChildren().addAll(addInputButton, removeInputButton, playButton);
+        buttonHBox.getChildren().addAll(MenuButton, addInputButton, removeInputButton, playButton);
         organizerVBox.getChildren().addAll(buttonHBox, dataView);
         this.getChildren().add(organizerVBox);
 
@@ -166,6 +167,8 @@ public class Evaluator extends Group{
             	}
                 GridPane.setMargin(rect, dataSpacing);
                 dataView.add(rect, j, i+1); //Column, row, 1 row is reserved for inputs
+                
+                WorkSpace.LevelOutputEval = WorkSpace.LevelOutputEval + String.valueOf((inputs.get(j).evaluate()) ? 1 : 0); //get Output eval to be check with LevelOutputEval //used for Level Value Match check in WorkSpace -Mika
             }
             App.tape.next();
         }
