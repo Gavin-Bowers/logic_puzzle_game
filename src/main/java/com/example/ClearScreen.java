@@ -2,7 +2,7 @@ package com.example;
 
 import javafx.scene.layout.HBox;
 
-//Use to clear things for Screen used for changing through menus - Mika
+//Use to clear things for Screen mostly used for changing through menus - Mika
 
 public class ClearScreen {
 	
@@ -11,7 +11,7 @@ public class ClearScreen {
 	
 	public static void All() { //clear all (call all clear methods)
 		
-		ClearScreen.Center();
+	ClearScreen.Center();
         ClearScreen.Cards();
         ClearScreen.Buttons();
         ClearScreen.Input();
