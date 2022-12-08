@@ -237,7 +237,7 @@ public class LogicGate extends Group{
     }
     public void addNodeSplitter() {
     	System.out.println(outputs.size());
-    	nodeContainer.getChildren().add(new WireNode());
+    	//nodeContainer.getChildren().add(new WireNode());	
     	if(this.outputs.size() == 1) {
     		outputs.add(new WireNode(130, 55, "output"));
     		this.getChildren().add(outputs.get(outputs.size()-1));
@@ -284,7 +284,7 @@ public class LogicGate extends Group{
 		nodeContainer.setStyle("-fx-border-color: green");
 		nodeContainer.setTranslateX(130);
 		nodeContainer.setTranslateY(25);
-		nodeContainer.getChildren().add(new WireNode());
+		//nodeContainer.getChildren().add(new WireNode());
 		this.getChildren().addAll(hbox, nodeContainer);
 		
 	}
