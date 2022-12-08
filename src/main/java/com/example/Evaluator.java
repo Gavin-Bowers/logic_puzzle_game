@@ -19,6 +19,7 @@ public class Evaluator extends Group{
     private HBox buttonHBox = new HBox(15);
     private Button addInputButton = new Button("+");
     private Button removeInputButton = new Button("-");
+    private Button MenuButton = new Button("Menu");
     private Button playButton = new Button("PLAY");
 
     private ArrayList<WireNode> inputs = new ArrayList<WireNode>();
@@ -117,6 +118,14 @@ public class Evaluator extends Group{
         });
     }
 
+    private void setupMenuButton(Button self) {
+        self.setOnAction(event -> {
+        	
+        	//ClearScreen.All();				//clears screen
+        	MainMenuSpace.MainMenuScene();	//loads Main Menu
+        });
+    }
+    
     //Other Stuff
 
     public void reformat() {
