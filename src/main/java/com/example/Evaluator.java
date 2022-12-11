@@ -6,6 +6,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -17,16 +19,34 @@ public class Evaluator extends Group{
 
     //Having any buttons in the program cause default css to be applied, so the styles.css file is used to overide it
     private HBox buttonHBox = new HBox(15);
-    private Button addInputButton = new Button("+");
-    private Button removeInputButton = new Button("-");
+    private Button addInputButton = new Button();
+    private Button removeInputButton = new Button();
     private Button MenuButton = new Button("Menu");
-    private Button playButton = new Button("PLAY");
+    private Button playButton = new Button("");
 
     private ArrayList<WireNode> inputs = new ArrayList<WireNode>();
     //private GridPane inputBox = new GridPane();
     private GridPane dataView = new GridPane();
 
     Evaluator() {
+        ImageView addInputView = new ImageView(new Image(getClass().getResourceAsStream("addbutton_no_bg.png")));
+        addInputView.setFitHeight(45);
+        addInputView.setPreserveRatio(true);
+        addInputButton.setGraphic(addInputView);
+        addInputButton.setPadding(Insets.EMPTY);
+
+        ImageView removeInputView = new ImageView(new Image(getClass().getResourceAsStream("minusbutton_no_bg.png")));
+        removeInputView.setFitHeight(45);
+        removeInputView.setPreserveRatio(true);
+        removeInputButton.setGraphic(removeInputView);
+        removeInputButton.setPadding(Insets.EMPTY);
+
+        ImageView playView = new ImageView(new Image(getClass().getResourceAsStream("startbutton_no_bg.png")));
+        playView.setFitHeight(45);
+        playView.setPreserveRatio(true);
+        playButton.setGraphic(playView);
+        playButton.setPadding(Insets.EMPTY);
+
         setupInputAdder(addInputButton);
         setupInputRemover(removeInputButton);
         setupPlayButton(playButton);
