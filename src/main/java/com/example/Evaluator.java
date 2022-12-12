@@ -23,6 +23,7 @@ public class Evaluator extends Group{
     private Button removeInputButton = new Button();
     private Button MenuButton = new Button("Menu");
     private Button playButton = new Button("");
+    private Button playTextButton = new Button("play");
 
     private ArrayList<WireNode> inputs = new ArrayList<WireNode>();
     //private GridPane inputBox = new GridPane();
@@ -66,7 +67,7 @@ public class Evaluator extends Group{
   //------------------------------------------------
     Evaluator(int ThisHoldsNothingJustUsedForSelection) {	//for level mode (temporary solution)
       
-        setupPlayButton(playButton);
+        setupPlayButton(playTextButton);
         setupMenuButton(MenuButton);
         
         buttonHBox.setAlignment(Pos.TOP_RIGHT);
@@ -74,7 +75,7 @@ public class Evaluator extends Group{
 
         organizerVBox.setAlignment(Pos.TOP_RIGHT);
 
-        buttonHBox.getChildren().addAll(MenuButton,playButton);		//spawns buttons
+        buttonHBox.getChildren().addAll(MenuButton,playTextButton);		//spawns buttons
         organizerVBox.getChildren().addAll(buttonHBox, dataView);
         this.getChildren().add(organizerVBox);
         
